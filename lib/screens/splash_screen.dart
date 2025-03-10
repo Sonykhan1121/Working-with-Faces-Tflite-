@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:work_with_faces/screens/loginscreen.dart';
 import 'package:work_with_faces/utils/appconstants.dart';
 
+import '../providers/auth_provider.dart';
 import '../utils/appcolors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initialize() async {
     print('test:initialize');
 
-    await Future.delayed(Duration(seconds:4));
+    await Provider.of<AuthProvider>(context, listen: false).initialize();
+    await Future.delayed(Duration(seconds: 2));
     print('test:initialize.f');
 
     if (mounted) {

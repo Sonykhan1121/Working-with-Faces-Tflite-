@@ -11,6 +11,12 @@ import 'package:image/image.dart' as img;
 import '../models/user.dart';
 
 class FaceRecognitionService {
+  static final FaceRecognitionService _instance = FaceRecognitionService._internal();
+  factory FaceRecognitionService() => _instance;
+
+  FaceRecognitionService._internal();
+
+
   late Interpreter _interpreter;
   late FaceDetector _faceDetector;
   bool _modelLoaded = false;
@@ -33,7 +39,7 @@ class FaceRecognitionService {
       );
       _faceDetector = FaceDetector(options: options2);
       _modelLoaded = true;
-      debugPrint('Model loaded Successfully');
+      print('model:Model loaded Successfully');
     } catch (e) {
       print('Loadmodel failed');
     }

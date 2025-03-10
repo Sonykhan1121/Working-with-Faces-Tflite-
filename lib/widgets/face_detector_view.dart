@@ -1,6 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:provider/provider.dart';
+import 'package:work_with_faces/services/face_recogniton_service.dart';
+
+import '../providers/auth_provider.dart';
 
 typedef FaceDetectedCallback = void Function(List<double> faceEmbedding);
 
@@ -15,6 +19,7 @@ class FaceDetectorView extends StatefulWidget {
 }
 
 class _FaceDetectorViewState extends State<FaceDetectorView> {
+  final FaceRecognitionService _faceService = FaceRecognitionService();
   CameraController? _cameraController;
   bool _isCameraInitialized = false;
   bool _isProcessing = false;
@@ -49,7 +54,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
 
       _cameraController = CameraController(
         frontCamera,
-        ResolutionPreset.ultraHigh,
+        ResolutionPreset.high,
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.yuv420,
       );
@@ -59,13 +64,62 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
         return;
       }
 
-      // await _cameraController!.startImageStream(_processCameraImage);
+      await _cameraController!.startImageStream(_processCameraImage);
+
       setState(() {
         _isCameraInitialized = true;
       });
+      if(!_faceService.isModelLoaded)
+        {
+          await _faceService.loadModel();
+        }
     } catch (e) {
       print("camera initialize problem");
     }
+  }
+  void _processCameraImage(CameraImage image) async {
+    if(_isProcessing || _processingComplete) return;
+    setState(() {
+      _isProcessing = true;
+    });
+    try{
+      final embedding = await _faceService.getFaceEmbedding(image);
+
+      if(embedding!=null)
+      {
+        _consecutiveDetections++;
+        setState(() {
+          _faceDetected = true;
+        });
+
+        if(_consecutiveDetections >= _requiredConsecutiveDetections)
+        {
+          setState(() {
+            _processingComplete = true;
+          });
+          await _cameraController?.stopImageStream();
+          widget.onFaceDetected(embedding);
+        }
+
+
+
+
+      }
+      else {
+        _consecutiveDetections = 0;
+        setState(() {
+          _faceDetected = false;
+        });
+      }
+    }
+    catch(e){
+      print("Face detection problem");
+    }
+
+    setState(() {
+      _isProcessing = false;
+    });
+
   }
 
   @override
@@ -95,6 +149,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
                     color: _processingComplete ? Colors.green : Colors.blue,
                     width: 2,
                   ),
+                  borderRadius: BorderRadius.circular(100),
                 ),
                 child:
                     _processingComplete
@@ -124,12 +179,13 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
           ),
 
           Positioned(
-            top: 50,
+            bottom: 50,
             left: 0,
             right: 0,
             child: Center(
               child: TextButton.icon(
                 onPressed: widget.onCancel,
+                icon:Icon(Icons.arrow_back,color:Colors.white,),
                 label: Text(
                   'Cancel',
                   style: TextStyle(color: Colors.white, fontSize: 16),

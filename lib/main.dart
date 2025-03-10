@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:work_with_faces/screens/loginscreen.dart';
-import 'package:work_with_faces/screens/signupscreen.dart';
+import 'package:provider/provider.dart';
+import 'package:work_with_faces/providers/auth_provider.dart';
 import 'package:work_with_faces/screens/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+     MultiProvider(
+       providers: [
+         ChangeNotifierProvider(create: (_) => AuthProvider()),
+
+       ],
+       child: MyApp(),
+     ),
+  );
 }
 
 class MyApp extends StatelessWidget {
