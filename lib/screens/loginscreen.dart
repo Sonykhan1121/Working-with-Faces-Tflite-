@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:work_with_faces/screens/signupscreen.dart';
+import 'package:work_with_faces/services/homescreen.dart';
 import 'package:work_with_faces/utils/appconstants.dart';
 import 'package:work_with_faces/widgets/custombutton.dart';
 
@@ -79,37 +81,42 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 24),
                     Custombutton(
                       text: 'login',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=> HomeScreen()));
+                      },
                       isLoading: false,
                     ),
-                    SizedBox(height:16),
-                    Custombutton(text: "Login with face", onPressed: (){},
+                    SizedBox(height: 16),
+                    Custombutton(
+                      text: "Login with face",
+                      onPressed: () {},
                       isLoading: false,
                       isOutlined: true,
-                    )
-                    ,
-                    SizedBox(height:32),
+                    ),
+                    SizedBox(height: 32),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Don't have an account?",
-                          style: Theme.of(context).textTheme.bodyMedium,),
+                        Text(
+                          "Don't have an account?",
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                         GestureDetector(
                           onTap: () {
-
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (_) => SignupScreen()),
+                            );
+                            // Navigate to registration screen
                           },
                           child: Text(
                             "Register",
                             style: Theme.of(context).textTheme.bodyLarge,
-
-
                           ),
-                        )
-
+                        ),
                       ],
-                    )
-
+                    ),
                   ],
                 ),
               ),

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Work with Faces',
-      home: SignupScreen(),
+      home: SplashScreen(),
     );
   }
 }

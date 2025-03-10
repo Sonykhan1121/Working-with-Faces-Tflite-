@@ -16,13 +16,18 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("test:initState");
     _initialize();
   }
 
   Future<void> _initialize() async {
+    print('test:initialize');
 
     await Future.delayed(Duration(seconds:4));
+    print('test:initialize.f');
+
     if (mounted) {
+      print('test:initialize>');
       Navigator.of(
         context,
       ).pushReplacement(MaterialPageRoute(builder: (_) => LoginScreen()));
@@ -31,6 +36,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("test:build");
     return Scaffold(
       appBar: AppBar(title: Text('')),
       body: Center(
