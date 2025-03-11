@@ -1,12 +1,11 @@
-import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as img;
+import 'package:tflite_flutter/tflite_flutter.dart';
 
 import '../models/user.dart';
 
@@ -40,6 +39,7 @@ class FaceRecognitionService {
       _faceDetector = FaceDetector(options: options2);
       _modelLoaded = true;
       print('model:Model loaded Successfully');
+
     } catch (e) {
       print('Loadmodel failed');
     }

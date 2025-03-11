@@ -1,10 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:provider/provider.dart';
 import 'package:work_with_faces/services/face_recogniton_service.dart';
-
-import '../providers/auth_provider.dart';
 
 typedef FaceDetectedCallback = void Function(List<double> faceEmbedding);
 

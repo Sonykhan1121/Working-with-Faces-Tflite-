@@ -19,15 +19,19 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     print("test:initState");
-    _initialize();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initialize();
+    });
   }
 
   Future<void> _initialize() async {
     print('test:initialize');
 
     await Provider.of<AuthProvider>(context, listen: false).initialize();
+
     await Future.delayed(Duration(seconds: 2));
     print('test:initialize.f');
+
 
     if (mounted) {
       print('test:initialize>');
